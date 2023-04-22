@@ -3,13 +3,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { MainStackScreen } from "./MainStack/MainStackScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import UserScreen from "./UserScreen/UserScreen";
+import LectureScreen from "./MainStack//LectureScreen/LectureScreen.main";
+
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { User, getAuth, onAuthStateChanged } from "firebase/auth";
 
-
-
 export type RootStackParamList = {
-  Main: undefined;
+  Lecture: undefined;
   User: undefined;
 };
 
@@ -47,11 +47,11 @@ export function RootStackScreen() {
     <NavigationContainer>
       <RootStack.Navigator
         screenOptions={{ presentation: "modal" }}
-        initialRouteName={userType ? "User" : "Main"}
+        initialRouteName={userType === "student" ? "User" : "Lecture"}
       >
         <RootStack.Screen
-          name="Main"
-          component={MainStackScreen}
+          name="Lecture"
+          component={LectureScreen}
           options={options}
         />
 

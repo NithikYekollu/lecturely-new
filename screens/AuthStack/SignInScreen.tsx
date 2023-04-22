@@ -49,22 +49,40 @@ export default function SignInScreen({ navigation }: Props) {
         setLoadingLecturer(false);
         setLoadingStudent(false);
         const user = userCredential.user;
-        const userTypeInDoc = userType === "student" ? "students" : "lecturers";
         const db = getFirestore();
         const usersRef = doc(db, "users", user.uid);
-       getDoc(usersRef).then((doc: { exists: any; }) => {
-          if (doc.exists) {
-          } else {
-            setMessage(`You're not signed in as a ${userType}.`);
-            setVisible(true);
-          }
+         getDoc(usersRef).then((doc) => {
+          if (doc.exists()) {
+            const userTypeInDoc = doc.data().userType;
+            console.log(userTypeInDoc)
+            console.log(userType)
+            if (userTypeInDoc === userType) {
+            } else {
+              throw new Error(`You're not signed in as a ${userType}.`);
+
+              setMessage(`You're not signed in as a ${userType}.`);
+
+            }
+          } 
+        }).catch((error) => {
+          navigation.navigate("SignInScreen");
+          setLoadingLecturer(false);
+          setLoadingStudent(false);
+          setMessage(error.message);
+          setVisible(true);
         });
       })
       .catch((error) => {
-        setMessage("Incorrect email or password.");
-        setVisible(true);
         setLoadingLecturer(false);
         setLoadingStudent(false);
+        if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
+          // Incorrect email or password
+          setMessage("Incorrect email or password.");
+        } else {
+          // Incorrect user type
+          setMessage(error.message);
+        }
+        setVisible(true);
       });
   };
 
@@ -158,6 +176,6 @@ export default function SignInScreen({ navigation }: Props) {
           </SafeAreaView>
           </>
           );
-          }
+  }
           
           
