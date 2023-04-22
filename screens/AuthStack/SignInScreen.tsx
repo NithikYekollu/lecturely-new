@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, ScrollView, Text } from "react-native";
 import { Appbar, TextInput, Snackbar, Button } from "react-native-paper";
 import { AuthStackParamList } from "./AuthStackScreen";
-import { getAuth, signInWithEmailAndPassword, signInWithEmailLink } from "firebase/auth";
-
+import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithEmailLink } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 interface Props {
   navigation: StackNavigationProp<AuthStackParamList, "SignInScreen">;
@@ -31,41 +31,68 @@ export default function SignInScreen({ navigation }: Props) {
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loadingStudent, setLoadingStudent] = useState(false);
+  const [loadingLecturer, setLoadingLecturer] = useState(false);
 
   const dismiss = () => setVisible(false);
 
-  
+  const signIn = (userType: string) => {
+    if(userType === "student") {
+      setLoadingStudent(true);
+    } else {
+      setLoadingLecturer(true);
+    }
 
-  const signIn = () => {
-  setLoading(true);
-  const auth = getAuth();
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      setLoading(false);
-      console.log(userCredential);
-    })
-    .catch((error) => {
-      setMessage("Incorrect");
-      setVisible(true);
-      setLoading(false);
-
-    });
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        setLoadingLecturer(false);
+        setLoadingStudent(false);
+        const user = userCredential.user;
+        const userTypeInDoc = userType === "student" ? "students" : "lecturers";
+        const db = getFirestore();
+        const usersRef = doc(db, "users", user.uid);
+       getDoc(usersRef).then((doc: { exists: any; }) => {
+          if (doc.exists) {
+          } else {
+            setMessage(`You're not signed in as a ${userType}.`);
+            setVisible(true);
+          }
+        });
+      })
+      .catch((error) => {
+        setMessage("Incorrect email or password.");
+        setVisible(true);
+        setLoadingLecturer(false);
+        setLoadingStudent(false);
+      });
   };
-    
 
+  const resetPassword = () => {
+    const auth = getAuth();
+    const emailAddress = email;
+    sendPasswordResetEmail(auth, emailAddress)
+      .then(() => {
+        setMessage("Password reset email sent!");
+        setVisible(true);
+      })
+      .catch((error) => {
+        setMessage("Error sending password reset email!");
+        setVisible(true);
+      });
+  };
 
-    const styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        padding: 32,
-        backgroundColor: "#ffffff",
-      },
-    });
-
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 32,
+      backgroundColor: "#ffffff",
+    },
+  });
 
   return (
-    <><Appbar.Header>
+    <>
+      <Appbar.Header>
         <Appbar.Content title="Sign In"/>
       </Appbar.Header>
       <SafeAreaView style={{ ...styles.container, padding: 30 }}>
@@ -78,44 +105,59 @@ export default function SignInScreen({ navigation }: Props) {
           label="Password"
           value={password}
           onChangeText={(password) => setPassword(password)}
-          style={{  marginBottom: 12 }}
+          style={{ marginBottom: 12 }}
           secureTextEntry
         />
         <Button
           mode="contained"
-          onPress={signIn}
-          
+          onPress={() => signIn("student")}
           style={{ marginTop: 16 }}
-          loading={loading}
-        >Sign in</Button>
+          loading={loadingStudent}
+        >
+          Sign in as student
+        </Button>
         <Button
-          onPress={()=>{navigation.navigate("SignUpScreen")}}
+          mode="contained"
+          onPress={() => signIn("lecturer")}
+          style={{ marginTop : 16 }}
+          loading={loadingLecturer}
+          >
+          Sign in as lecturer
+          </Button>
+          <Button
+          onPress={() => {
+          navigation.navigate("SignUpScreen");
+          }}
           style={{ marginTop: 16 }}
-        >Sign Up</Button>
-        <Button
-          onPress={()=>{setMessage("reset email has been sent")
-          setVisible(true)
-        }}
+          >
+          Sign Up
+          </Button>
+          <Button
+          onPress={() => {
+          resetPassword();
+          setMessage("reset email has been sent");
+          setVisible(true);
+          }}
           style={{ marginTop: 16 }}
-        >Reset Password</Button>
-        <Snackbar
+          >
+          Reset Password
+          </Button>
+          <Snackbar
           duration={2000}
           visible={visible}
-          onDismiss = {dismiss}
+          onDismiss={dismiss}
           action={{
-          label: 'Undo',
+          label: "Undo",
           onPress: () => {
-            dismiss
+          dismiss;
           },
-        }}>
-        
+          }}
+          >
           {message}
-        </Snackbar>
-      </SafeAreaView>
-    </>
-
-  ); }
-
-
-
-
+          </Snackbar>
+          </SafeAreaView>
+          </>
+          );
+          }
+          
+          

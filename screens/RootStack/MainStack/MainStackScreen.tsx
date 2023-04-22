@@ -1,13 +1,13 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import FeedScreen from "./FeedScreen/FeedScreen.main";
-import DetailScreen from "./DetailScreen/DetailScreen.main";
-import { SocialModel } from "../../../models/social";
+import ClassScreen from "./ClassScreen/ClassScreen.main";
+import LectureScreen from "./LectureScreen/LectureScreen.main";
+ 
 
 export type MainStackParamList = {
-  FeedScreen: undefined;
-  DetailScreen: { social: SocialModel };
+  ClassScreen: undefined;
   NewSocialScreen: undefined;
+  LectureScreen: undefined;
 };
 
 const MainStack = createStackNavigator<MainStackParamList>();
@@ -16,14 +16,14 @@ export function MainStackScreen() {
   return (
     <MainStack.Navigator>
       <MainStack.Screen
-        name="FeedScreen"
+        name="LectureScreen"
         options={{ headerShown: false }}
-        component={FeedScreen}
+        component={LectureScreen}
       />
       <MainStack.Screen
-        name="DetailScreen"
+        name="ClassScreen"
         options={{ headerShown: false }}
-        component={DetailScreen}
+        component={ClassScreen}
       />
     </MainStack.Navigator>
   );
