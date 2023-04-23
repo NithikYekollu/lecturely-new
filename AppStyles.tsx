@@ -14,6 +14,7 @@ export const AppStyles = StyleSheet.create({
   },
   h1: {
     fontSize: 32,
+    fontFamily: "Poppins-SemiBold"
   },
   h2: {
     fontSize: 24,
