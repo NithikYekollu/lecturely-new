@@ -47,6 +47,8 @@ export default function SignInScreen({ navigation }: Props) {
   const loadFonts = async () => {
     await Font.loadAsync({
       SemiBold: require("../../assets/fonts/Poppins-SemiBold.ttf"),
+      Medium: require("../../assets/fonts/Poppins-Medium.ttf"),
+      Regular: require("../../assets/fonts/Poppins-Regular.ttf"),
     });
     setFontLoaded(true);
   };
