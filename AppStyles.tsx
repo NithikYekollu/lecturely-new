@@ -1,11 +1,11 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 
-export const COLOR_PRIMARY = "#0984e3";
+export const COLOR_PRIMARY = "#5271FF";
 export const COLOR_ACCENT = "#dfe6e9";
 export const COLOR_LIGHT = "#dfe6e9";
 export const COLOR_DARK = "#2d3436";
-export const COLOR_BACKGROUND = "#ffffff";
+export const COLOR_BACKGROUND = "#EAEEFF";
 
 export const AppStyles = StyleSheet.create({
   container: {
@@ -14,7 +14,6 @@ export const AppStyles = StyleSheet.create({
   },
   h1: {
     fontSize: 32,
-    fontFamily: "Poppins-SemiBold"
   },
   h2: {
     fontSize: 24,

@@ -1,10 +1,17 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useState } from "react";
-import { Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
-import { Appbar, TextInput, Snackbar, Button, RadioButton } from "react-native-paper";
+import { Text, SafeAreaView, StyleSheet, ScrollView, View } from "react-native";
+import {
+  Appbar,
+  TextInput,
+  Snackbar,
+  Button,
+  RadioButton,
+} from "react-native-paper";
 import { AuthStackParamList } from "./AuthStackScreen";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { styles } from "./Auth.styles";
 
 interface Props {
   navigation: StackNavigationProp<AuthStackParamList, "SignUpScreen">;
@@ -20,14 +27,13 @@ export default function SignUpScreen({ navigation }: Props) {
 
   const dismiss = () => setVisible(false);
 
-
   const signUp = () => {
     setLoading(true);
     const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password) 
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setLoading(false);
-        console.log('User account created & signed in!');
+        console.log("User account created & signed in!");
         const user = userCredential.user;
         const db = getFirestore();
         const usersRef = doc(db, "users", user.uid);
@@ -43,45 +49,66 @@ export default function SignUpScreen({ navigation }: Props) {
       });
   };
 
-
-
   const handleUserTypeChange = (value: string) => {
     setUserType(value);
   };
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 32,
-      backgroundColor: "#ffffff",
-    },
-  });
 
   return (
     <>
       <Appbar.Header>
         <Appbar.Content title="Sign Up" />
       </Appbar.Header>
-      <SafeAreaView style={{ ...styles.container, padding: 30 }}>
-        <TextInput
-          label="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <TextInput
-          label="Password"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          secureTextEntry={true}
-        />
-        <Text style={{ marginTop: 20 }}>Select user type:</Text>
-        <RadioButton.Group onValueChange={handleUserTypeChange} value={userType}>
-          <RadioButton.Item label="Student" value="student" />
-          <RadioButton.Item label="Lecturer" value="lecturer" />
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>Let's Get Started</Text>
+        <Text style={styles.description}>Use your .edu email to Sign Up</Text>
+        <View style={styles.textInputWrapper}>
+          <TextInput
+            placeholder="example@university.edu"
+            value={email}
+            onChangeText={(email) => setEmail(email)}
+            style={styles.textInput}
+            underlineColor="transparent"
+            keyboardType="email-address"
+            left={
+              <TextInput.Icon
+                style={styles.icon}
+                icon="email-outline"
+                color="#BEC0C7"
+              />
+            }
+          />
+        </View>
+        <View style={styles.textInputWrapper}>
+          <TextInput
+            placeholder="Password"
+            value={password}
+            onChangeText={(password) => setPassword(password)}
+            style={styles.textInput}
+            secureTextEntry
+            underlineColor="transparent"
+            left={
+              <TextInput.Icon
+                style={styles.icon}
+                icon="lock-outline"
+                color="#BEC0C7"
+              />
+            }
+          />
+        </View>
+        <Text style={{ ...styles.description, marginTop: 20, marginBottom: 0 }}>
+          Select user type:
+        </Text>
+        <RadioButton.Group
+          onValueChange={handleUserTypeChange}
+          value={userType}
+        >
+          <RadioButton.Item label="Student" value="student" color="#5271FF"/>
+          <RadioButton.Item label="Lecturer" value="lecturer" color="#5271FF"/>
         </RadioButton.Group>
         <Button
           mode="contained"
-          style={{ marginTop: 20 }}
+          style={styles.button}
+          labelStyle={styles.buttonLabel}
           onPress={() => signUp()}
           loading={loading}
         >
@@ -89,7 +116,8 @@ export default function SignUpScreen({ navigation }: Props) {
         </Button>
         <Button
           mode="contained"
-          style={{ marginTop: 20 }}
+          style={styles.button}
+          labelStyle={styles.buttonLabel}
           onPress={() => navigation.navigate("SignInScreen")}
         >
           Sign In Instead

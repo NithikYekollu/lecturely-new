@@ -14,6 +14,7 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { AppStyles } from "../../AppStyles";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
+import {styles} from "./Auth.styles";
 
 interface Props {
   navigation: StackNavigationProp<AuthStackParamList, "SignInScreen">;
@@ -123,52 +124,6 @@ export default function SignInScreen({ navigation }: Props) {
       });
   };
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 32,
-      backgroundColor: "#EAEEFF",
-      justifyContent: "center",
-    },
-    textInputWrapper: {
-      marginTop: 16,
-      marginBottom: 16,
-      backgroundColor: "white",
-      borderRadius: 99,
-      marginLeft: 20,
-      marginRight: 20,
-      overflow: "hidden",
-    },
-    textInput: {
-      backgroundColor: "transparent",
-      padding: 10,
-      marginLeft: 30,
-      fontFamily: "SemiBold",
-    },
-    button: {
-      marginTop: 16,
-    },
-    title: {
-      fontFamily: "SemiBold",
-      fontSize: 27,
-      marginBottom: 12,
-      marginTop: 12,
-      textAlign: "center",
-    },
-    icon: {
-      marginTop: 30,
-      marginRight: 30,
-    },
-    description: {
-      fontFamily: "SemiBold",
-      fontSize: 16,
-      marginBottom: 24,
-      marginTop: 24,
-      color: "#7E8189",
-      textAlign: "center",
-    },
-  });
-
   return (
     <>
       {!fontLoaded ? (
@@ -178,10 +133,10 @@ export default function SignInScreen({ navigation }: Props) {
           <Appbar.Header>
             <Appbar.Content title="Sign In" />
           </Appbar.Header>
-          <SafeAreaView style={{ ...styles.container, padding: 30 }}>
-            <Text style={styles.title}>Let's Get Started</Text>
+          <SafeAreaView style={styles.container}>
+            <Text style={styles.title}>Welcome Back!</Text>
             <Text style={styles.description}>
-              Use your .edu email to sign up
+              Use your .edu email to Sign In
             </Text>
             <View style={styles.textInputWrapper}>
               <TextInput
@@ -220,15 +175,17 @@ export default function SignInScreen({ navigation }: Props) {
             <Button
               mode="contained"
               onPress={() => signIn("student")}
-              style={{ marginTop: 16 }}
+              style={styles.button}
               loading={loadingStudent}
+              labelStyle={styles.buttonLabel}
             >
               Sign in as student
             </Button>
             <Button
               mode="contained"
               onPress={() => signIn("lecturer")}
-              style={{ marginTop: 16 }}
+              style={styles.button}
+              labelStyle={styles.buttonLabel}
               loading={loadingLecturer}
             >
               Sign in as lecturer
@@ -238,6 +195,7 @@ export default function SignInScreen({ navigation }: Props) {
                 navigation.navigate("SignUpScreen");
               }}
               style={{ marginTop: 16 }}
+              labelStyle={styles.buttonLabel}
             >
               Sign Up
             </Button>
@@ -248,6 +206,7 @@ export default function SignInScreen({ navigation }: Props) {
                 setVisible(true);
               }}
               style={{ marginTop: 16 }}
+              labelStyle={styles.buttonLabel}
             >
               Reset Password
             </Button>
