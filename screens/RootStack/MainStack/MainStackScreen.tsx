@@ -2,11 +2,12 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ClassScreen from "./ClassScreen/ClassScreen.main";
 import LectureScreen from "./LectureScreen/LectureScreen.main";
+import { ClassModel } from "../../../models/class";
+import UserScreen from "../UserScreen/UserScreen";
  
 
 export type MainStackParamList = {
-  ClassScreen: undefined;
-  NewSocialScreen: undefined;
+  ClassScreen: { classModel: ClassModel | undefined };
   LectureScreen: undefined;
 };
 

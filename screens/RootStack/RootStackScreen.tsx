@@ -7,10 +7,13 @@ import LectureScreen from "./MainStack//LectureScreen/LectureScreen.main";
 
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { User, getAuth, onAuthStateChanged } from "firebase/auth";
+import ClassScreen from "./MainStack/ClassScreen/ClassScreen.main";
+import { ClassModel } from "../../models/class";
 
 export type RootStackParamList = {
   Lecture: undefined;
   User: undefined;
+  ClassScreen: { classModel: ClassModel | undefined };
 };
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -24,7 +27,7 @@ export function RootStackScreen() {
     const auth = getAuth();
     const db = getFirestore();
     const user = auth.currentUser;
-    if(!user) return;
+    if (!user) return;
     const usersRef = doc(db, "users", user.uid);
     getDoc(usersRef).then((doc) => {
       if (doc.exists()) {
@@ -46,7 +49,7 @@ export function RootStackScreen() {
   return (
     <NavigationContainer>
       <RootStack.Navigator
-        screenOptions={{ presentation: "modal" }}
+        // screenOptions={{ presentation: "modal" }}
         initialRouteName={userType === "student" ? "User" : "Lecture"}
       >
         <RootStack.Screen
@@ -58,6 +61,11 @@ export function RootStackScreen() {
         <RootStack.Screen
           name="User"
           component={UserScreen}
+          options={options}
+        />
+        <RootStack.Screen
+          name="ClassScreen"
+          component={ClassScreen}
           options={options}
         />
       </RootStack.Navigator>

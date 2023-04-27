@@ -1,6 +1,13 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import React from "react";
-import { SafeAreaView, StyleSheet, ScrollView, Text, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  Text,
+  View,
+  FlatList,
+} from "react-native";
 import {
   Appbar,
   TextInput,
@@ -16,9 +23,23 @@ import {
 } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { styles } from "./UserScreen.styles";
+import {
+  getFirestore,
+  collection,
+  query,
+  onSnapshot,
+  doc,
+  where,
+  getDoc,
+} from "firebase/firestore";
+import { ClassModel } from "../../../models/class";
+import { SocialModel } from "../../../models/social";
+import { MainStackParamList } from "../MainStack/MainStackScreen";
+import { RootStackParamList } from "../RootStackScreen";
 
 export type UserStackParamList = {
   UserScreen: undefined;
+  ClassScreen: { classModel: ClassModel | undefined };
 };
 
 interface Props {
@@ -26,6 +47,84 @@ interface Props {
 }
 
 export default function UserScreen({ navigation }: Props) {
+  const [classes, setClasses] = useState<ClassModel[]>([]);
+  const auth = getAuth();
+  const currentUserId = auth.currentUser!.uid;
+  const db = getFirestore();
+  const docRef = doc(db, "users", currentUserId);
+  const classesCollection = collection(db, "classes");
+  const usersCollection = collection(db, "users");
+
+  //   useEffect(() => {
+  //   const unsubscribe = getAuth().onAuthStateChanged(async (user) => {
+  //     if (user) {
+  //       const userDoc = await getDoc(docRef);
+  //       const classIds = userDoc.get("classes");
+  //       var newClasses: ClassModel[] = [];
+  //       for (const classId of classIds) {
+  //         const classRef = doc(db, "classes", classId);
+  //         const classDoc = await getDoc(classRef);
+  //         const newClass = classDoc.data() as ClassModel;
+  //         newClass.id = classDoc.id;
+  //         newClasses.push(newClass);
+  //       }
+  //       setClasses(newClasses);
+  //     }
+  //   });
+  //   return unsubscribe;
+  // }, []);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(docRef, (doc) => {
+      if (doc.exists()) {
+        const classIds = doc.data().classes as string[];
+        getClasses(classIds);
+      }
+    });
+    return unsubscribe;
+  }, []);
+
+  const getClasses = async (classIds: string[]) => {
+    var newClasses: ClassModel[] = [];
+    for (const classId of classIds) {
+      const classRef = doc(db, "classes", classId);
+      const classDoc = await getDoc(classRef);
+      const newClass = classDoc.data() as ClassModel;
+      newClass.id = classDoc.id;
+      newClasses.push(newClass);
+    }
+    setClasses(newClasses);
+  };
+
+  const renderClass = ({ item }: { item: ClassModel }) => {
+    const onPress = () => {
+      console.log(item);
+      navigation.navigate("ClassScreen", { classModel: item });
+    };
+
+    return (
+      // <Button
+      //   mode="contained"
+      //   style={styles.button}
+      //   labelStyle={styles.buttonLabel}
+      //   onPress={onPress}
+      // >
+      //   {item.className + " - " + item.lecturerName}
+      // </Button>
+      <Button
+        mode="contained"
+        style={styles.button}
+        labelStyle={styles.buttonLabel}
+        onPress={onPress}
+      >
+        <View style={styles.buttonContainer}>
+          <Text style={styles.className}>{item.className}</Text>
+          <Text style={styles.lecturerName}>{item.lecturerName}</Text>
+        </View>
+      </Button>
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* <Appbar.Header>
@@ -95,29 +194,15 @@ export default function UserScreen({ navigation }: Props) {
             See All
           </Text>
         </View>
-        <View style={{ ...styles.row1, marginLeft: 30, marginRight: 30 }}>
-          <Button
-            mode="contained"
-            style={styles.button}
-            labelStyle={styles.buttonLabel}
-          >
-            CS61B
-          </Button>
-          <Button
-            mode="contained"
-            style={styles.button}
-            labelStyle={styles.buttonLabel}
-          >
-            CS61B
-          </Button>
-          <Button
-            mode="contained"
-            style={styles.button}
-            labelStyle={styles.buttonLabel}
-          >
-            CS61B
-          </Button>
-        </View>
+        {/* <View style={{ ...styles.row1, marginLeft: 30, marginRight: 30 }}> */}
+        <FlatList
+          horizontal={true}
+          contentContainerStyle={{ flexDirection: "row" }}
+          data={classes}
+          renderItem={renderClass}
+          keyExtractor={(_: any, index: number) => "key-" + index}
+        />
+        {/* </View> */}
         <View
           style={{
             ...styles.row1,

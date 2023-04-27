@@ -51,6 +51,22 @@ export const styles = StyleSheet.create({
     fontFamily: "SemiBold",
     fontSize: 16,
   },
+  buttonContainer: {
+    // alignItems: 'center',
+    // padding: 10,
+    justifyContent: 'center',
+  },
+  className: {
+    // marginTop: 16,
+    fontFamily: "SemiBold",
+    color: "#ffffff",
+    fontSize: 16,
+  },
+  lecturerName: {
+    fontFamily: "SemiBold",
+    fontSize: 14,
+    color: '#ffffff',
+  },
   title: {
     fontFamily: "SemiBold",
     fontSize: 27,
