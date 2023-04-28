@@ -17,15 +17,15 @@ import {
   signInWithEmailLink,
 } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { MainStackParamList } from "../MainStackScreen";
+import { UserStackParamList } from "../UserStackScreen";
 import { RootStackParamList } from "../../RootStackScreen";
-import { styles } from "../../UserScreen/UserScreen.styles";
+import { styles } from "../UserHomeScreen/UserHomeScreen.styles";
 import { LectureModel } from "../../../../models/lecture";
 import { getDoc, getFirestore, doc } from "firebase/firestore";
 
 interface Props {
-  navigation: StackNavigationProp<RootStackParamList, "ClassScreen">;
-  route: RouteProp<RootStackParamList, "ClassScreen">;
+  navigation: StackNavigationProp<UserStackParamList, "ClassScreen">;
+  route: RouteProp<UserStackParamList, "ClassScreen">;
 }
 
 export default function ClassScreen({ route, navigation }: Props) {

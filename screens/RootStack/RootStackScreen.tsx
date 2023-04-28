@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { MainStackScreen } from "./MainStack/MainStackScreen";
+import { UserStackScreen } from "./UserStack/UserStackScreen";
 import { NavigationContainer } from "@react-navigation/native";
-import UserScreen from "./UserScreen/UserScreen";
 
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { User, getAuth, onAuthStateChanged } from "firebase/auth";
-import ClassScreen from "./MainStack/ClassScreen/ClassScreen.main";
+import ClassScreen from "./UserStack/ClassScreen/ClassScreen.main";
 import { ClassModel } from "../../models/class";
-import LecturerScreen from "./LecturerScreen/LecturerScreen.main";
+import LecturerScreen from "./LecturerStack/LecturerHomeScreen.main";
 
 export type RootStackParamList = {
   LecturerScreen: undefined;
   User: undefined;
-  ClassScreen: { classModel: ClassModel | undefined };
 };
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -57,15 +55,9 @@ export function RootStackScreen() {
           component={LecturerScreen}
           options={options}
         />
-
         <RootStack.Screen
           name="User"
-          component={UserScreen}
-          options={options}
-        />
-        <RootStack.Screen
-          name="ClassScreen"
-          component={ClassScreen}
+          component={UserStackScreen}
           options={options}
         />
       </RootStack.Navigator>

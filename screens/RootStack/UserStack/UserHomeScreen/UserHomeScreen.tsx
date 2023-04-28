@@ -22,7 +22,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { styles } from "./UserScreen.styles";
+import { styles } from "./UserHomeScreen.styles";
 import {
   getFirestore,
   collection,
@@ -32,15 +32,13 @@ import {
   where,
   getDoc,
 } from "firebase/firestore";
-import { ClassModel } from "../../../models/class";
-import { SocialModel } from "../../../models/social";
-import { MainStackParamList } from "../MainStack/MainStackScreen";
-import { RootStackParamList } from "../RootStackScreen";
+import { ClassModel } from "../../../../models/class";
+import { UserStackParamList } from "../UserStackScreen";
 
-export type UserStackParamList = {
-  UserScreen: undefined;
-  ClassScreen: { classModel: ClassModel | undefined };
-};
+// export type UserStackParamList = {
+//   UserScreen: undefined;
+//   ClassScreen: { classModel: ClassModel | undefined };
+// };
 
 interface Props {
   navigation: StackNavigationProp<UserStackParamList>;
@@ -52,8 +50,6 @@ export default function UserScreen({ navigation }: Props) {
   const currentUserId = auth.currentUser!.uid;
   const db = getFirestore();
   const docRef = doc(db, "users", currentUserId);
-  const classesCollection = collection(db, "classes");
-  const usersCollection = collection(db, "users");
 
   //   useEffect(() => {
   //   const unsubscribe = getAuth().onAuthStateChanged(async (user) => {
@@ -103,14 +99,6 @@ export default function UserScreen({ navigation }: Props) {
     };
 
     return (
-      // <Button
-      //   mode="contained"
-      //   style={styles.button}
-      //   labelStyle={styles.buttonLabel}
-      //   onPress={onPress}
-      // >
-      //   {item.className + " - " + item.lecturerName}
-      // </Button>
       <Button
         mode="contained"
         style={styles.button}
