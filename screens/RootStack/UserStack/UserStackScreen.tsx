@@ -1,14 +1,14 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ClassScreen from "./ClassScreen/ClassScreen.main";
-import LectureScreen from "../LecturerStack/LecturerHomeScreen.main";
 import { ClassModel } from "../../../models/class";
 import UserScreen from "./UserHomeScreen/UserHomeScreen";
- 
+import { LectureModel } from "../../../models/lecture";
+import LectureScreen from "./LectureScreen/LectureScreen";
 
 export type UserStackParamList = {
   ClassScreen: { classModel: ClassModel | undefined };
-  LectureScreen: undefined;
+  LectureScreen: { lectureModel: LectureModel | undefined };
   UserHome: undefined;
 };
 
@@ -28,10 +28,10 @@ export function UserStackScreen() {
         component={ClassScreen}
       />
       <UserStack.Screen
-          name="UserHome"
-          component={UserScreen}
-          options={{ headerShown: false }}
-        />
+        name="UserHome"
+        component={UserScreen}
+        options={{ headerShown: false }}
+      />
     </UserStack.Navigator>
   );
 }

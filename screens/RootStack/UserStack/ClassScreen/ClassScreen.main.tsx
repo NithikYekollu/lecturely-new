@@ -55,6 +55,7 @@ export default function ClassScreen({ route, navigation }: Props) {
   const renderLecture = ({ item }: { item: LectureModel }) => {
     const onPress = () => {
       console.log(item);
+      navigation.navigate("LectureScreen", { lectureModel: item });
     };
 
     return (
