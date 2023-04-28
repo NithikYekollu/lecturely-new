@@ -4,13 +4,13 @@ import { SafeAreaView, StyleSheet, ScrollView, Text } from "react-native";
 import { Appbar, TextInput, Snackbar, Button } from "react-native-paper";
 import { getAuth, signInWithEmailAndPassword, signInWithEmailLink, signOut } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
-import { MainStackParamList } from "../MainStackScreen";
+import { MainStackParamList } from "../MainStack/MainStackScreen";
 
 interface Props {
-    navigation: StackNavigationProp<MainStackParamList, "LectureScreen">;
+    navigation: StackNavigationProp<MainStackParamList, "LecturerScreen">;
 }
 
-export default function LectureScreen({ navigation }: Props) {
+export default function LecturerScreen({ navigation }: Props) {
         
     return (
         <SafeAreaView >

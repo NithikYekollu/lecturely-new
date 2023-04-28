@@ -1,14 +1,14 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ClassScreen from "./ClassScreen/ClassScreen.main";
-import LectureScreen from "./LectureScreen/LectureScreen.main";
+import LectureScreen from "../LecturerScreen/LecturerScreen.main";
 import { ClassModel } from "../../../models/class";
 import UserScreen from "../UserScreen/UserScreen";
  
 
 export type MainStackParamList = {
   ClassScreen: { classModel: ClassModel | undefined };
-  LectureScreen: undefined;
+  LecturerScreen: undefined;
 };
 
 const MainStack = createStackNavigator<MainStackParamList>();
@@ -17,7 +17,7 @@ export function MainStackScreen() {
   return (
     <MainStack.Navigator>
       <MainStack.Screen
-        name="LectureScreen"
+        name="LecturerScreen"
         options={{ headerShown: false }}
         component={LectureScreen}
       />

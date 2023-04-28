@@ -3,5 +3,6 @@ export interface ClassModel {
     className: number;
     lecturerName: string;
     currentUser: string;
+    lectureList: string[];
   }
   
