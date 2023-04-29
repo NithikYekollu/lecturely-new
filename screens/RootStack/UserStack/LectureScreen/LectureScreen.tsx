@@ -90,7 +90,7 @@ export default function LectureScreen({ route, navigation }: Props) {
             </View>
           </View>
         </View>
-        {selectedTab === "Feedback" && <FeedbackTab />}
+        {selectedTab === "Feedback" && lectureModel && <FeedbackTab lectureModel={lectureModel}/>}
         {selectedTab === "Q&A" && <Text>Q&A</Text>}
         {selectedTab === "Polls" && <Text>Polls</Text>}
       </View>

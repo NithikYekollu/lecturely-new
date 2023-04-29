@@ -32,6 +32,9 @@ export default function ClassScreen({ route, navigation }: Props) {
   const classModel = route.params.classModel;
   const db = getFirestore();
   const [lectures, setLectures] = useState<LectureModel[]>([]);
+  const auth = getAuth();
+  const currentUserId = auth.currentUser!.uid;
+
 
   useEffect(() => {
     const db = getFirestore();
@@ -55,6 +58,7 @@ export default function ClassScreen({ route, navigation }: Props) {
   const renderLecture = ({ item }: { item: LectureModel }) => {
     const onPress = () => {
       console.log(item);
+      console.log(currentUserId);
       navigation.navigate("LectureScreen", { lectureModel: item });
     };
 

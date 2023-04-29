@@ -51,24 +51,6 @@ export default function UserScreen({ navigation }: Props) {
   const db = getFirestore();
   const docRef = doc(db, "users", currentUserId);
 
-  //   useEffect(() => {
-  //   const unsubscribe = getAuth().onAuthStateChanged(async (user) => {
-  //     if (user) {
-  //       const userDoc = await getDoc(docRef);
-  //       const classIds = userDoc.get("classes");
-  //       var newClasses: ClassModel[] = [];
-  //       for (const classId of classIds) {
-  //         const classRef = doc(db, "classes", classId);
-  //         const classDoc = await getDoc(classRef);
-  //         const newClass = classDoc.data() as ClassModel;
-  //         newClass.id = classDoc.id;
-  //         newClasses.push(newClass);
-  //       }
-  //       setClasses(newClasses);
-  //     }
-  //   });
-  //   return unsubscribe;
-  // }, []);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(docRef, (doc) => {
@@ -115,11 +97,11 @@ export default function UserScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Appbar.Header>
+      <Appbar.Header>
         <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Content title="Student" />
         <Appbar.Action icon="exit-to-app" onPress={() => signOut(getAuth())} />
-      </Appbar.Header> */}
+      </Appbar.Header>
       <ScrollView>
         <View style={{ backgroundColor: "#7D95FF" }}>
           <View style={styles.row1}>
