@@ -153,7 +153,7 @@ export default function NewLectureScreen({ navigation }: Props) {
       const socialRef = collection(db, "lectures");
       const socialDoc: LectureModel = {
         
-          classID: 0,
+          classID: '',
           lectureName: lectureName,
           currentUser: user.uid,
           lectureSpeed: [],
@@ -189,7 +189,7 @@ export default function NewLectureScreen({ navigation }: Props) {
          <TextInput label="Lecture Name" value={lectureName} onChangeText={setName} />
         }
         {/* TextInput */
-         <TextInput label="Event Location" value={lectureNumber} onChangeText={setNumber} />
+         <TextInput label="Lecture Number" value={lectureNumber} onChangeText={setNumber} />
         }
         {/* Button */
           eventDate? <Button mode="outlined"  onPress={showDatePicker}>{eventDate}</Button> : <Button mode="outlined" onPress={showDatePicker}>Select Date</Button>
