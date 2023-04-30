@@ -1,8 +1,9 @@
+import { ReactNode } from "react";
+
 export interface ClassModel {
     id?: string;
-    className: number;
+    className: string;
     lecturerName: string;
-    currentUser: string;
     lectureList: string[];
   }
   

@@ -6,12 +6,17 @@ import { NavigationContainer } from "@react-navigation/native";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { User, getAuth, onAuthStateChanged } from "firebase/auth";
 import ClassScreen from "./UserStack/ClassScreen/ClassScreen.main";
-import { ClassModel } from "../../models/class";
-import LecturerScreen from "./LecturerStack/LecturerHomeScreen.main";
+import { ClassModel } from "../../models/clas";
+import LecturerScreen from "./LecturerStack/ClassHomeScreen.main";
+import NewLectureScreen from "./NewLectureScreen";
+import NewClassScreen from "./NewClassScreen";
 
 export type RootStackParamList = {
   LecturerScreen: undefined;
   User: undefined;
+  NewLectureScreen: undefined;
+  NewClassScreen: undefined;
+
 };
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -59,6 +64,16 @@ export function RootStackScreen() {
           name="User"
           component={UserStackScreen}
           options={options}
+        />
+        <RootStack.Screen
+          name="NewLectureScreen"
+          options={options}
+          component={NewLectureScreen}
+        />
+        <RootStack.Screen
+          name="NewClassScreen"
+          options={options}
+          component={NewClassScreen}
         />
       </RootStack.Navigator>
     </NavigationContainer>

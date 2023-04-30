@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ClassScreen from "./ClassScreen/ClassScreen.main";
-import { ClassModel } from "../../../models/class";
+import { ClassModel } from "../../../models/clas";
 import UserScreen from "./UserHomeScreen/UserHomeScreen";
 import { LectureModel } from "../../../models/lecture";
 import LectureScreen from "./LectureScreen/LectureScreen";

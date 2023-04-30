@@ -32,7 +32,7 @@ import {
   where,
   getDoc,
 } from "firebase/firestore";
-import { ClassModel } from "../../../../models/class";
+import { ClassModel } from "../../../../models/clas";
 import { UserStackParamList } from "../UserStackScreen";
 
 // export type UserStackParamList = {

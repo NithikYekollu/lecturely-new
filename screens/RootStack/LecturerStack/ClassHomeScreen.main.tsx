@@ -10,6 +10,7 @@ import { LectureStackParamList } from "./LectureStackScreen";
 import { collection, getFirestore, onSnapshot, orderBy, query } from "firebase/firestore";
 import { styles } from "../../AuthStack/Auth.styles";
 import { LectureModel } from "../../../models/lecture";
+import { ClassModel } from "../../../models/clas";
 
 
 /* HOW TYPESCRIPT WORKS WITH PROPS:
@@ -25,12 +26,12 @@ import { LectureModel } from "../../../models/lecture";
   that isn't supported by React Navigation! */
 
 interface Props {
-    navigation: StackNavigationProp<LectureStackParamList, "LectureHome">;
+    navigation: StackNavigationProp<LectureStackParamList, "ClassHomeScreen">;
 }
 
-export default function LecturerHomeScreen({ navigation }: Props) {
+export default function ClassHomeScreen({ navigation }: Props) {
   // TODO: Initialize a list of SocialModel objects in state.
-  const[obj, setObj] = useState<LectureModel[]>([]);
+  const[obj, setObj] = useState<ClassModel[]>([]);
 
   /* TYPESCRIPT HINT: 
     When we call useState(), we can define the type of the state
@@ -54,14 +55,14 @@ export default function LecturerHomeScreen({ navigation }: Props) {
   */
    useEffect(()=> {
      const db = getFirestore();
-     const socialsRef = collection(db, "lectures");
+     const socialsRef = collection(db, "classes");
 
-      const unsub = onSnapshot(query(socialsRef, orderBy("date", "desc")), (snapshot) =>
+      const unsub = onSnapshot(query(socialsRef, orderBy("className", "desc")), (snapshot) =>
         {
-          const newSocials: LectureModel[] = [];
+          const newSocials: ClassModel[] = [];
           snapshot.forEach((doc) => {
             const data = doc.data();
-            newSocials.push(data as LectureModel);
+            newSocials.push(data as ClassModel);
           }
           );
           setObj(newSocials);
@@ -77,15 +78,15 @@ export default function LecturerHomeScreen({ navigation }: Props) {
 
    
 
-  const renderItem = ({ item }: { item: LectureModel }) => {
+  const renderItem = ({ item }: { item: ClassModel }) => {
     // TODO: Return a Card corresponding to the social object passed in
     // to this function. On tapping this card, navigate to DetailScreen
     // and pass this social.
     return (
-    <Card onPress = {() => navigation.navigate("LectureDetailScreen", {lecture: item})}>
+    <Card onPress = {() => navigation.navigate("ClassDetailScreen", {clas: item})}>
       <Card.Cover source={{}} />
       <Card.Content>
-        <Card.Title title={item.lectureName} subtitle = {`${item.lectureNumber} ・ ${item.date} `} />
+        <Card.Title title={item.className} subtitle = {`${item.lecturerName} `} />
       </Card.Content>
     </Card>
     )
@@ -98,8 +99,8 @@ export default function LecturerHomeScreen({ navigation }: Props) {
           icon="exit-to-app"
           onPress={() => signOut(getAuth())}
         />
-      <Appbar.Content title="Lectures" />
-      <Appbar.Action icon = "plus" onPress={() => navigation.navigate("NewLectureScreen")} />
+      <Appbar.Content title="Classes" />
+      <Appbar.Action icon = "plus" onPress={() => navigation.navigate("NewClassScreen")} />
     </Appbar.Header>
       
   };
@@ -111,7 +112,7 @@ export default function LecturerHomeScreen({ navigation }: Props) {
       <FlatList
         data={obj}
         renderItem={renderItem}
-        keyExtractor={(item) => item.lectureName}
+        keyExtractor={(item) => item.className}
       />
     </View>
     </>

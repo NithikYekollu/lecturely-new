@@ -1,6 +1,6 @@
 export interface LectureModel {
     id?: string;
-    classID: number;
+    classID: string;
     lectureName: string;
     currentUser: string;
     lectureSpeed: { userID: string; value: number }[];
