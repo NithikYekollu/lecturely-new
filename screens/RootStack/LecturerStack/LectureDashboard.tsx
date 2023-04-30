@@ -12,6 +12,8 @@ import { Appbar } from "react-native-paper";
 import { getDoc, getFirestore, doc } from "firebase/firestore";
 import { LectureStackParamList } from "./LectureStackScreen";
 import { styles } from "../UserStack/UserHomeScreen/UserHomeScreen.styles";
+import QATab from "../UserStack/LectureScreen/Q&ATab/Q&ATab.main";
+import FeedbackDashboard from "./FeedbackDashboard";
 
 
 
@@ -90,8 +92,8 @@ export default function LectureDashboard({ route, navigation }: Props) {
             </View>
           </View>
         </View>
-        {selectedTab === "Feedback"  && <Text>Feedback</Text>}
-        {selectedTab === "Q&A" && <Text>Feedback</Text>}
+        {selectedTab === "Feedback"  && lectureModel && <FeedbackDashboard lectureModel={lectureModel}/>}
+        {selectedTab === "Q&A" && lectureModel && <QATab lectureModel={lectureModel}/>}
         {selectedTab === "Polls" && <Text>Polls</Text>}
       </View>
     </SafeAreaView>
