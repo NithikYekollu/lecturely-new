@@ -35,29 +35,6 @@ export default function ClassScreen({ route, navigation }: Props) {
   const auth = getAuth();
   const currentUserId = auth.currentUser!.uid;
 
-//   const onClassCreated = (classModel: ClassModel) => {
-//     // Get the classModel's lectureList
-//     const lectureIds = classModel?.lectureList;
-//     // If lectureIds is not undefined or empty
-//     if (lectureIds && lectureIds.length > 0) {
-//       // Create an array of promises, where each promise represents a call to getDoc for a single lecture
-//       const lecturePromises = lectureIds.map((lectureId) => {
-//         const lectureRef = doc(db, "lectures", lectureId);
-//         return getDoc(lectureRef);
-//       });
-//       // Wait for all the promises to resolve and update the state of lectures
-//       Promise.all(lecturePromises).then((lectureDocs) => {
-//         const newLectures = lectureDocs.map((lectureDoc) => {
-//           const newLecture = lectureDoc.data() as LectureModel;
-//           newLecture.id = lectureDoc.id;
-//           return newLecture;
-//         });
-//         setLectures(newLectures);
-//       });
-//     }
-//   };
-
-
   useEffect(() => {
     const db = getFirestore();
     const lectureIds = classModel?.lectureList;
@@ -136,6 +113,15 @@ export default function ClassScreen({ route, navigation }: Props) {
               }}
             >
               Instructor: {classModel?.lecturerName}
+            </Text>
+            <Text
+              style={{
+                ...styles.description,
+                fontSize: 25,
+                fontFamily: "Medium",
+              }}
+            >
+              Code: {classModel?.code}
             </Text>
           </View>
         </View>

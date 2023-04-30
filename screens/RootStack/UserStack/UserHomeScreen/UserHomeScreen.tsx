@@ -31,6 +31,8 @@ import {
   doc,
   where,
   getDoc,
+  getDocs,
+  updateDoc,
 } from "firebase/firestore";
 import { ClassModel } from "../../../../models/class";
 import { UserStackParamList } from "../UserStackScreen";
@@ -46,11 +48,11 @@ interface Props {
 
 export default function UserScreen({ navigation }: Props) {
   const [classes, setClasses] = useState<ClassModel[]>([]);
+  const [enteredCode, setEnteredCode] = useState("");
   const auth = getAuth();
   const currentUserId = auth.currentUser!.uid;
   const db = getFirestore();
   const docRef = doc(db, "users", currentUserId);
-
 
   useEffect(() => {
     const unsubscribe = onSnapshot(docRef, (doc) => {
@@ -72,6 +74,26 @@ export default function UserScreen({ navigation }: Props) {
       newClasses.push(newClass);
     }
     setClasses(newClasses);
+  };
+
+  const handleLectureCode = async () => {
+    const classesRef = collection(db, "classes");
+    const q = query(classesRef, where("code", "==", enteredCode));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.log("not found");
+      return;
+    } else {
+      console.log("found");
+      const classDoc = querySnapshot.docs[0];
+      const classModel = classDoc.data() as ClassModel;
+      classModel.id = classDoc.id;
+      const classIds = classes.map(classModel => classModel.id);
+      await updateDoc(docRef, { classes: [...classIds, classModel.id] });
+      setClasses([...classes, classModel]);
+      setEnteredCode("");
+    }
   };
 
   const renderClass = ({ item }: { item: ClassModel }) => {
@@ -108,7 +130,11 @@ export default function UserScreen({ navigation }: Props) {
               <Text style={{ ...styles.description, fontFamily: "Medium" }}>
                 Welcome Back
               </Text>
-              <Text style={styles.description}>Aldrin Ong</Text>
+              <Text style={styles.description}>
+                {auth.currentUser?.email
+                  ? auth.currentUser.email.split("@")[0]
+                  : ""}
+              </Text>
             </View>
 
             <IconButton
@@ -124,6 +150,8 @@ export default function UserScreen({ navigation }: Props) {
                 placeholder="Enter Lecture Code"
                 style={styles.textInput}
                 underlineColor="transparent"
+                value={enteredCode}
+                onChangeText={(text) => setEnteredCode(text)}
                 left={
                   <TextInput.Icon
                     style={styles.icon}
@@ -138,6 +166,7 @@ export default function UserScreen({ navigation }: Props) {
               icon="arrow-right"
               color="#7D95FF"
               style={styles.iconButton}
+              onPress={handleLectureCode}
             />
           </View>
         </View>
