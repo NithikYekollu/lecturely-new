@@ -152,14 +152,14 @@ export default function NewLectureScreen({ navigation }: Props) {
       const db = getFirestore();
       const socialRef = collection(db, "lectures");
       const socialDoc: LectureModel = {
-        
-          classID: '',
-          lectureName: lectureName,
-          currentUser: user.uid,
-          lectureSpeed: [],
-          understanding: [],
-          date: eventDate,
-          lectureNumber: 0
+        classID: '',
+        lectureName: lectureName,
+        currentUser: user.uid,
+        lectureSpeed: [],
+        understanding: [],
+        date: eventDate,
+        lectureNumber: 0,
+        qna: []
       };
       await addDoc(socialRef, socialDoc);
       console.log("Finished lecture creation.");
