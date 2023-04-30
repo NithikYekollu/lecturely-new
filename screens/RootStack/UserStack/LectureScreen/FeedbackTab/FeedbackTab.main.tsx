@@ -74,63 +74,6 @@ const FeedbackTab = (props: { lectureModel: LectureModel }) => {
     updateUnderstanding();
   }, [understandingValue]);
 
-  //   useEffect(() => {
-  //     const updateSpeed = async () => {
-  //         const number = 1;
-  //       const speedExists = lectureModel.lectureSpeed.find(
-  //         (speed) => speed.userID === currentUserId
-  //       );
-  //       if (speedExists) {
-  //         await updateDoc(lectureRef, {
-  //           lectureSpeed: {
-  //             [currentUserId]: {
-  //               userID: currentUserId,
-  //               value: speedValue,
-  //             },
-  //           },
-  //         });
-  //       } else {
-  //         await updateDoc(lectureRef, {
-  //           lectureSpeed: {
-  //             [currentUserId]: {
-  //               userID: currentUserId,
-  //               value: speedValue,
-  //             },
-  //           },
-  //         });
-  //       }
-  //     };
-  //     updateSpeed();
-  //   }, [speedValue]);
-
-  //   useEffect(() => {
-  //     const updateUnderstanding = async () => {
-  //       const understandingExists = lectureModel.understanding.find(
-  //         (understanding) => understanding.userID === currentUserId
-  //       );
-  //       if (understandingExists) {
-  //         await updateDoc(lectureRef, {
-  //           understanding: {
-  //             [currentUserId]: {
-  //               userID: currentUserId,
-  //               value: understandingValue,
-  //             },
-  //           },
-  //         });
-  //       } else {
-  //         await updateDoc(lectureRef, {
-  //           understanding: {
-  //             [currentUserId]: {
-  //               userID: currentUserId,
-  //               value: understandingValue,
-  //             },
-  //           },
-  //         });
-  //       }
-  //     };
-  //     updateUnderstanding();
-  //   }, [understandingValue]);
-
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Lecture Speed</Text>

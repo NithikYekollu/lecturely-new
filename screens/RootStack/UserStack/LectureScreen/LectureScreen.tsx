@@ -14,6 +14,7 @@ import { styles } from "../UserHomeScreen/UserHomeScreen.styles";
 import { LectureModel } from "../../../../models/lecture";
 import { getDoc, getFirestore, doc } from "firebase/firestore";
 import FeedbackTab from "./FeedbackTab/FeedbackTab.main";
+import QATab from "./Q&ATab/Q&ATab.main";
 
 interface Props {
   navigation: StackNavigationProp<UserStackParamList, "LectureScreen">;
@@ -91,7 +92,7 @@ export default function LectureScreen({ route, navigation }: Props) {
           </View>
         </View>
         {selectedTab === "Feedback" && lectureModel && <FeedbackTab lectureModel={lectureModel}/>}
-        {selectedTab === "Q&A" && <Text>Q&A</Text>}
+        {selectedTab === "Q&A" && lectureModel && <QATab lectureModel={lectureModel}/>}
         {selectedTab === "Polls" && <Text>Polls</Text>}
       </View>
     </SafeAreaView>

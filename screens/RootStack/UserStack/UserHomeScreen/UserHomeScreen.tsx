@@ -98,7 +98,6 @@ export default function UserScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.container}>
       <Appbar.Header>
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Content title="Student" />
         <Appbar.Action icon="exit-to-app" onPress={() => signOut(getAuth())} />
       </Appbar.Header>

@@ -7,4 +7,5 @@ export interface LectureModel {
     understanding: { userID: string; value: number }[];
     date: string;
     lectureNumber: number;
+    qna: { message: string; email: string; time: string; }[];
 }
