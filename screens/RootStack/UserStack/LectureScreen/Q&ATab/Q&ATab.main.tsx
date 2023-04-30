@@ -1,19 +1,56 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  ScrollView,
+} from "react-native";
 import { TextInput } from "react-native-paper";
 
 import { LectureModel } from "../../../../../models/lecture";
+import { getAuth } from "firebase/auth";
+import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
 
 const QATab = (props: { lectureModel: LectureModel }) => {
   const [question, setQuestion] = useState("");
   const lectureModel = props.lectureModel;
+  const [qna, setQna] = useState<LectureModel["qna"]>([]);
+  const auth = getAuth();
+  const email = auth.currentUser!.email;
+  const db = getFirestore();
+  if (!lectureModel || !lectureModel.id) return <View></View>;
+  const docRef = doc(db, "lectures", lectureModel.id);
+  const lectureRef = doc(db, "lectures", lectureModel.id);
 
-  const handleSubmit = () => {
-    // Add the question to the database or whatever the desired functionality is
+  useEffect(() => {
+    const unsubscribe = onSnapshot(docRef, (doc) => {
+      if (doc.exists()) {
+        setQna(doc.data().qna);
+      }
+    });
+    return unsubscribe;
+  }, []);
+
+  const handleSubmit = async () => {
+    if (email) {
+      const name = email.split("@")[0];
+      const time = new Date().toLocaleString();
+      const updatedLecture = lectureModel;
+      updatedLecture.qna = [
+        ...qna,
+        { message: question, email: name, time: time },
+      ];
+      updatedLecture.qna.sort((a, b) => (a.time > b.time ? 1 : -1));
+      updatedLecture.qna.reverse();
+      await updateDoc(lectureRef, { qna: updatedLecture.qna });
+      setQuestion("");
+    }
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.textInputWrapper}>
         <TextInput
           placeholder="Type your question"
@@ -36,15 +73,22 @@ const QATab = (props: { lectureModel: LectureModel }) => {
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
         <Text style={styles.submitButtonText}>Submit</Text>
       </TouchableOpacity>
-      <View style={styles.questionContainer}>
-        <View style={styles.avatarContainer} />
-        <View style={styles.questionDetailsContainer}>
-          <Text style={styles.username}>John Doe</Text>
-          <Text style={styles.timestamp}>20 seconds ago</Text>
-          <Text style={styles.questionText}>Hi, when is lab due?</Text>
-        </View>
-      </View>
-    </View>
+      <FlatList
+        data={qna}
+        keyExtractor={(item) => item.time}
+        scrollEnabled={false}
+        renderItem={({ item }) => (
+          <View style={styles.questionContainer}>
+            <View style={styles.avatarContainer} />
+            <View style={styles.questionDetailsContainer}>
+              <Text style={styles.username}>{item.email}</Text>
+              <Text style={styles.timestamp}>{item.time}</Text>
+              <Text style={styles.questionText}>{item.message}</Text>
+            </View>
+          </View>
+        )}
+      />
+    </ScrollView>
   );
 };
 
