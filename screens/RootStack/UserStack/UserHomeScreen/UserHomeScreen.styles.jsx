@@ -8,6 +8,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLOR_BACKGROUND,
     justifyContent: "center",
   },
+  fab: {
+    position: "absolute",
+    bottom: 16,
+    right: 16,
+  },
   row1: {
     // flex: 3,
     // padding: 30,
