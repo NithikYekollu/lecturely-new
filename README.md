@@ -6,4 +6,4 @@ Lecturely is a React Native application designed to enhance the interaction betw
 **Aldrin Ong**
 🔗 [GitHub](github.com/0n9aldrin) | [LinkedIn](https://linkedin.com/in/aldrin0n9)  
 **Nithik Yekollu**
-🔗 [GitHub]([YOUR_GITHUB_LINK](https://github.com/NithikYekollu)) | [LinkedIn]([YOUR_LINKEDIN_LINK](https://www.linkedin.com/in/nithik-yekollu-7298671a8/)https://www.linkedin.com/in/nithik-yekollu-7298671a8/)
+🔗 [GitHub](https://github.com/NithikYekollu) | [LinkedIn](https://www.linkedin.com/in/nithik-yekollu-7298671a8/)
